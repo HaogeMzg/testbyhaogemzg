@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>R★ GAMES | 游戏工作室模板</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #141414;
+      --text: #f0f0f0;
+      --muted: #a0a0a0;
+      --accent: #ff3c00;
+      --accent2: #ffb800;
+      --border: #2a2a2a;
+      --font-display: 'Impact', 'Arial Black', sans-serif;
+      --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* 导航 */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 70px;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.8rem; letter-spacing: 2px;
+      color: var(--accent2);
+    }
+    .logo span { color: var(--accent); }
+    .nav-links {
+      display: flex; gap: 30px; list-style: none;
+    }
+    .nav-links a {
+      font-weight: 600; font-size: 0.95rem;
+      text-transform: uppercase; letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent2); }
+    .menu-toggle {
+      display: none; background: none; border: none;
+      color: var(--text); font-size: 1.8rem; cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 80vh; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,60,0,0.15), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(255,184,0,0.1), transparent 40%),
+        var(--bg2);
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.95; text-transform: uppercase;
+      letter-spacing: 2px; margin-bottom: 20px;
+      text-shadow: 4px 4px 0 rgba(255,60,0,0.3);
+    }
+    .hero h1 span { color: var(--accent2); }
+    .hero p {
+      font-size: 1.2rem; color: var(--muted);
+      margin-bottom: 30px; max-width: 500px;
+    }
+    .buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 14px 32px;
+      font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; border: 2px solid transparent;
+      transition: all 0.2s; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #e63500; transform: translateY(-2px); }
+    .btn-outline { background: transparent; border-color: var(--text); color: var(--text); }
+    .btn-outline:hover { background: var(--text); color: var(--bg); transform: translateY(-2px); }
+
+    /* 通用区块 */
+    section { padding: 80px 0; }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem; text-transform: uppercase;
+      letter-spacing: 2px; margin-bottom: 15px;
+    }
+    .section-title span { color: var(--accent); }
+    .section-sub { color: var(--muted); margin-bottom: 50px; max-width: 600px; }
+
+    /* 游戏卡片 */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+    .game-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 4px; overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .game-card:hover { transform: translateY(-6px); border-color: var(--accent2); }
+    .game-cover {
+      height: 200px;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 1.5rem;
+      color: rgba(255,255,255,0.1); text-transform: uppercase;
+      letter-spacing: 4px; position: relative; overflow: hidden;
+    }
+    .game-cover::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(45deg, transparent 40%, rgba(255,60,0,0.2) 50%, transparent 60%);
+    }
+    .game-info { padding: 20px; }
+    .game-info h3 { font-size: 1.3rem; margin-bottom: 8px; text-transform: uppercase; }
+    .game-info p { color: var(--muted); font-size: 0.9rem; margin-bottom: 15px; }
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+    .tag {
+      background: rgba(255,184,0,0.15); color: var(--accent2);
+      padding: 4px 10px; font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; border-radius: 2px;
+    }
+
+    /* 新闻 */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    .news-item { border-left: 3px solid var(--accent); padding-left: 20px; }
+    .news-date {
+      font-size: 0.8rem; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+    }
+    .news-item h3 { font-size: 1.1rem; margin-bottom: 10px; }
+    .news-item p { color: var(--muted); font-size: 0.9rem; }
+
+    /* CTA */
+    .cta {
+      background: linear-gradient(135deg, rgba(255,60,0,0.1), rgba(255,184,0,0.05));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .cta h2 {
+      font-family: var(--font-display); font-size: 2.5rem;
+      text-transform: uppercase; margin-bottom: 15px;
+    }
+    .cta p { color: var(--muted); margin-bottom: 30px; }
+    .newsletter {
+      display: flex; gap: 10px; max-width: 500px;
+      margin: 0 auto; flex-wrap: wrap; justify-content: center;
+    }
+    .newsletter input {
+      flex: 1; min-width: 200px; padding: 14px 18px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); font-size: 1rem; outline: none;
+    }
+    .newsletter input:focus { border-color: var(--accent2); }
+    .newsletter button {
+      padding: 14px 30px; background: var(--accent); color: #fff;
+      border: none; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
+    }
+    .newsletter button:hover { background: #e63500; }
+
+    /* 页脚 */
+    footer {
+      padding: 40px 0; border-top: 1px solid var(--border);
+      text-align: center; color: var(--muted); font-size: 0.85rem;
+    }
+    .social {
+      display: flex; gap: 20px; justify-content: center; margin-bottom: 20px;
+    }
+    .social a {
+      font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; transition: color 0.2s;
+    }
+    .social a:hover { color: var(--accent2); }
+
+    /* 移动端 */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none; position: absolute; top: 70px; left: 0; right: 0;
+        background: var(--bg2); flex-direction: column;
+        padding: 20px; gap: 15px;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links.active { display: flex; }
+      .menu-toggle { display: block; }
+      .hero { min-height: 70vh; }
+      .hero h1 { font-size: 3rem; }
+      section { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="logo">R<span>★</span> GAMES</a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#games">游戏</a></li>
+      <li><a href="#news">新闻</a></li>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>欢迎来到<br><span>NEON CITY</span></h1>
+      <p>开放世界、动作冒险、次世代体验。这是受 Rockstar 风格启发的游戏工作室网站模板。</p>
+      <div class="buttons">
+        <a href="#games" class="btn btn-primary">查看游戏</a>
+        <a href="#news" class="btn btn-outline">最新消息</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="games">
+    <div class="container">
+      <h2 class="section-title">我们的 <span>游戏</span></h2>
+      <p class="section-sub">这里展示游戏作品，可替换为真实封面图和介绍。</p>
+      <div class="games-grid">
+        <article class="game-card">
+          <div class="game-cover">GAME 01</div>
+          <div class="game-info">
+            <h3>霓虹狂飙</h3>
+            <p>在开放世界中驾驶、探索、完成各种任务。</p>
+            <div class="tags"><span class="tag">动作</span><span class="tag">开放世界</span></div>
+            <a href="#" class="btn btn-outline" style="padding:10px 20px; font-size:0.8rem;">了解更多</a>
+          </div>
+        </article>
+        <article class="game-card">
+          <div class="game-cover">GAME 02</div>
+          <div class="game-info">
+            <h3>暗夜街区</h3>
+            <p>充满故事驱动的第三人称冒险，选择影响结局。</p>
+            <div class="tags"><span class="tag">冒险</span><span class="tag">剧情</span></div>
+            <a href="#" class="btn btn-outline" style="padding:10px 20px; font-size:0.8rem;">了解更多</a>
+          </div>
+        </article>
+        <article class="game-card">
+          <div class="game-cover">GAME 03</div>
+          <div class="game-info">
+            <h3>亡命竞速</h3>
+            <p>高速竞速与警匪追逐，支持多人在线。</p>
+<div班级="tags"'提交'
+，
+</div>div>
+</
+文章
+// 订阅表单
+文件。
+
+  <section id="news" style="background: var(--bg2);">section id="news" style="background: var(--bg2);">section id="news" style="background: var(--bg2);">section id="news" style="background: var(--bg2);">
+<div class="container">div class="container">div class="container">div class="container">
+<h2class="section-title">最新<span>新闻</span></h2>h2class="section-title">最新<span>新闻</span></h2>h2class="section-title">最新<span>新闻</span></h2>h2class="section-title">最新<span>新闻</span></h2>
+<p class="section-sub">发布更新、活动与工作室动态。</p>p class="section-sub">发布更新、活动与工作室动态。</p>p class="section-sub">发布更新、活动与工作室动态。</p>p class="section-sub">发布更新、活动与工作室动态。</p>
+<div class="news-grid">div class="news-grid">div class="news-grid">div class="news-grid">
+<article class="news-item">文章class="news-item">article class="news-item">article class="news-item">
+<div class="news-date">2026-10-06</div>div class="news-date">2026-10-06</div>div class="news-date">2026-10-06</div>div class="news-date">2026-10-06</div>
+<h3>新扩展包即将上线</h3>h3>新扩展包即将上线</h3>h3>新扩展包即将上线</h3>h3>新扩展包即将上线</h3>
+          <p>全新地图区域、任务和载具将在下个月与玩家见面。</p>p>全新地图区域、任务和载具将在下个月与玩家见面。</p>p>全新地图区域、任务和载具将在下个月与玩家见面。</p>p>全新地图区域、任务和载具将在下个月与玩家见面。</p>
+</article>文章>article>article>
+<article class="news-item">文章class="news-item">article class="news-item">article class="news-item">
+<div class="news-date">2026-09-28</div>div class="news-date">2026-09-28</div>div class="news-date">2026-09-28</div>div class="news-date">2026-09-28</div>
+<h3>社区活动回顾</h3>h3>社区活动回顾</h3>h3>社区活动回顾</h3>h3>社区活动回顾</h3>
+<p>感谢所有参与线上竞赛的玩家，获奖名单已公布.</p>p>感谢所有参与线上竞赛的玩家，获奖名单已公布.</p>p>感谢所有参与线上竞赛的玩家，获奖名单已公布.</p>p>感谢所有参与线上竞赛的玩家，获奖名单已公布.</p>
+</article>文章>article>article>
+<article class="news-item">文章class="news-item">article class="news-item">article class="news-item">
+<div class="news-date">2026-09-15</div>div class="news-date">2026-09-15</div>div class="news-date">2026-09-15</div>div class="news-date">2026-09-15</div>
+          <h3>开发日志 #12</h3>h3>开发日志 #12</h3>h3>开发日志 #12</h3>h3>开发日志 #12</h3>
+          <p>了解我们如何打造更真实的城市环境和光影效果。</p>p>了解我们如何打造更真实的城市环境和光影效果。</p>p>了解我们如何打造更真实的城市环境和光影效果。</p>p>了解我们如何打造更真实的城市环境和光影效果。</p>
+</article>文章>article>article>
+</div>div>div>div>
+</div>div>div>div>
+</section>section>section>section>
+
+<section class="cta"id="contact">section class="cta"id="contact">section class="cta"id="contact">section class="cta"id="contact">
+<div class="container">div class="container">div class="container">div class="container">
+      <h2>保持 <span style="color:var(--accent);">联系</span></h2>h2>保持 <span style="color:var(--accent);">联系</span></h2>h2>保持 <span style="color:var(--accent);">联系</span></h2>h2>保持 <span style="color:var(--accent);">联系</span></h2>
+      <p>订阅获取最新游戏资讯和独家内容。</p>p>订阅获取最新游戏资讯和独家内容。</p>p>订阅获取最新游戏资讯和独家内容。</p>p>订阅获取最新游戏资讯和独家内容。</p>
+<form class="newsletter"id="newsletterForm">form class="newsletter"id="newsletterForm">form class="newsletter"id="newsletterForm">form class="newsletter"id="newsletterForm">
+<输入类型="电子邮件"占位符="你的邮箱地址"必需的>"电子邮件"占位符="你的邮箱地址"必需的>"电子邮件"占位符="你的邮箱地址"必需的>"电子邮件"占位符="你的邮箱地址"必需的>
+<button type="submit">订阅</button>button type="submit">订阅</button>button type="submit">订阅</button>button type="submit">订阅</button>
+</form>表单>form>form>
+</div>div>div>div>
+</section>section>section>section>
+</main>main>main>main>
+
+<页脚>
+<div class="container">div class="container">div class="container">div class="container">
+<div class="social">div class="social">div class="social">div class="social">
+<a href="#">Twitter</a>a href="#">Twitter</a>a href="#">Twitter</a>a href="#">Twitter</a>
+<a href="#">YouTube</a>a href="#">YouTube</a>a href="#">YouTube</a>a href="#">YouTube</a>
+<a href="#">Twitch</a>a href="#">Twitch</a>a href="#">Twitch</a>a href="#">Twitch</a>
+<a href="#">不一致</a>a href="#">不一致</a>a href="#">不一致</a>a href="#">不一致</a>
+</div>div>div>div>
+<p>©<span id="year"></span>Rn-0Games。本模板仅用于学习与布局参考，请勿使用官方商标与素材。</p>p>©<span id="year"></span>Rn-0Games。本模板仅用于学习与布局参考，请勿使用官方商标与素材。</p>p>©<span id="year"></span>Rn-0Games。本模板仅用于学习与布局参考，请勿使用官方商标与素材。</p>p>©<span id="year"></span>Rn-0Games。本模板仅用于学习与布局参考，请勿使用官方商标与素材。</p>
+</div>div>div>div>
+</footer>页脚>footer>footer>
+
+<脚本>脚本>script>script>
+  // 移动端菜单// 移动端菜单// 移动端菜单// 移动端菜单
+常量菜单切换=文件。getElementById('menuToggle')；document.getElementById('menuToggle')；document.getElementById('menuToggle')；document.getElementById('menuToggle')；
+常量navlinks=文档。getElementById('navlinks')；navlinks=document.getElementById('navlinks')；navlinks=document.getElementById('navlinks')；navlinks=document.getElementById('navlinks')；
+menuToggle。addEventListener('click'，()=>{.addEventListener('click'，()=>{.addEventListener('click'，()=>{.addEventListener('click'，()=>{
+导航链接。classList.切换('active')；。classList.切换('active')；.classList.toggle('active')；.classList.toggle('active')；
+  });
+导航链接。querySelectorAll('a').forEach(link=>{querySelectorAll('a').foreach(link=>{querySelectorAll('a').forEach(link=>{querySelectorAll('a').foreach(link=>{
+链接。addEventListener('click'，()=>导航链接。移除('active'))；addEventListener('click'，()=>navlinks.移除('active'))；addEventListener('click'，()=>navlinks.classList.移除('active'))；addEventListener('click'，()=>navlinks.classList.移除('active'))；
+  });
+
+// 年份
+文件。getElementById('year').textContent=新日期()。getFullYear()；getElementById('year')。textContent=新日期().getFullYear()；('year').textContent=新日期().getFullYear()；getElementById('year').textContent=新日期().getFullYear()；
+
+// 订阅表单
+文件。getElementById('newsletterForm')。addEventListener('submit'，(e)=>{getElementById('newsletterForm').AddEventListener('提交('newsletterForm')。addEventListener('submit'，(e)=>{getElementById('newsletterForm').addEventListener('提交''，(e)=>{(e)=>{
+e.preventDefault()；
+    alert('感谢订阅！这是一个演示表单，不会真正发送数据。');
+e.target.reset()；
+  });
+</script>
+
+</body>
+</html>
